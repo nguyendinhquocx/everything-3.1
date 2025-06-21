@@ -1,4 +1,4 @@
-// Global variables x
+// Global variables x a
 let currentUserQuery = '';
 let currentFilter = '';
 let selectedDrives = new Set(['D:']); // Default to D: drive only
