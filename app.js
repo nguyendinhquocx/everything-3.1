@@ -1,4 +1,4 @@
-// Global variables
+// Global variables x
 let currentUserQuery = '';
 let currentFilter = '';
 let selectedDrives = new Set(['D:']); // Default to D: drive only
@@ -555,7 +555,7 @@ function applyFolderFilter() {
     applyQuickFilter('folder:');
 }
 
-// Update quick filter UI state
+// Update quick filter UI state 
 function updateQuickFilterUI(activeFilter) {
     // Remove active class from all quick items
     document.querySelectorAll('.quick-item').forEach(item => {
