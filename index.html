@@ -8,144 +8,77 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <!-- Search Section - Google style -->
-        <div class="search-section" id="searchSection">
-            <div class="search-wrapper">
+    <!-- New Horizontal Toolbar -->
+    <div class="toolbar" id="toolbar">
+        <div class="toolbar-content">
+            <!-- Search Input -->
+            <div class="search-group">
                 <div class="search-icon">
                     <svg viewBox="0 0 24 24">
                         <path d="M15.5 14h-.79l-.28-.27c.98-1.14 1.57-2.62 1.57-4.23 0-3.59-2.91-6.5-6.5-6.5s-6.5 2.91-6.5 6.5 2.91 6.5 6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0c-2.49 0-4.5-2.01-4.5-4.5s2.01-4.5 4.5-4.5 4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5z"/>
                     </svg>
                 </div>
-                <input type="text" class="search-input" placeholder="" id="searchInput" autocomplete="off" title="">
-                
-                <!-- Date Filter -->
-                <div class="date-filter" id="dateFilter">
-                    <button class="date-btn" onclick="toggleDateDropdown()" title="Lọc theo ngày" id="dateBtn">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                <input type="text" class="search-input" placeholder="Tìm kiếm" id="searchInput" autocomplete="off">
+            </div>
+
+            <!-- Drive Selector -->
+            <div class="filter-group">
+                <div class="drive-option" onclick="toggleDrive('C:')" title="Bao gồm ổ C:">
+                    <div class="drive-checkbox" id="driveC">
+                        <svg class="check-icon" viewBox="0 0 24 24">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
                         </svg>
-                        <span id="selectedDateText">Tất cả</span>
-                        <svg class="dropdown-arrow" viewBox="0 0 24 24">
-                            <path d="M7 10l5 5 5-5z"/>
-                        </svg>
-                    </button>
-                    <div class="date-dropdown" id="dateDropdown">
-                        <!-- Quick Date Options -->
-                        <div class="date-section">
-                            <div class="section-title">Nhanh</div>
-                            <div class="date-option active" onclick="selectQuickDate('all', 'Tất cả')">
-                                <span>Tất cả thời gian</span>
-                            </div>
-                            <div class="date-option" onclick="selectQuickDate('today', 'Hôm nay')">
-                                <span>Hôm nay</span>
-                                <small id="todayDate"></small>
-                            </div>
-                            <div class="date-option" onclick="selectQuickDate('thisweek', 'Tuần này')">
-                                <span>Tuần này</span>
-                                <small id="thisWeekRange"></small>
-                            </div>
-                            <div class="date-option" onclick="selectQuickDate('thismonth', 'Tháng này')">
-                                <span>Tháng này</span>
-                                <small id="thisMonthRange"></small>
-                            </div>
-                            <div class="date-option" onclick="selectQuickDate('thisyear', 'Năm này')">
-                                <span>Năm này</span>
-                                <small>2025</small>
-                            </div>
-                        </div>
-                        
-                        <!-- Custom Date Range -->
-                        <div class="date-section">
-                            <div class="section-title">Tùy chỉnh</div>
-                            <div class="custom-date-options">
-                                <div class="date-range-type">
-                                    <label>
-                                        <input type="radio" name="dateType" value="range" checked onchange="updateDateInputs()">
-                                        <span>Trong khoảng</span>
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="dateType" value="after" onchange="updateDateInputs()">
-                                        <span>Sau ngày</span>
-                                    </label>
-                                    <label>
-                                        <input type="radio" name="dateType" value="before" onchange="updateDateInputs()">
-                                        <span>Trước ngày</span>
-                                    </label>
-                                </div>
-                                
-                                <div class="date-inputs" id="dateInputs">
-                                    <div class="date-input-group">
-                                        <label>Từ ngày:</label>
-                                        <input type="date" id="startDate" onchange="updateCustomDate()">
-                                    </div>
-                                    <div class="date-input-group">
-                                        <label>Đến ngày:</label>
-                                        <input type="date" id="endDate" onchange="updateCustomDate()">
-                                    </div>
-                                </div>
-                                
-                                <div class="date-actions">
-                                    <button class="btn-apply" onclick="applyCustomDate()">Áp dụng</button>
-                                    <button class="btn-clear" onclick="clearDateFilter()">Xóa bộ lọc</button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
+                    <span>C:</span>
                 </div>
+            </div>
+
+            <!-- File Type Filters -->
+            <div class="filter-group">
+                <button class="filter-icon" onclick="applyImageFilter()" id="filter-images" title="Hình ảnh">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                    </svg>
+                </button>
                 
-                <!-- Drive Selector - Simplified to only C: drive toggle -->
-                <div class="drive-selector" id="driveSelector">
-                    <div class="drive-option" data-drive="C:" onclick="toggleDrive('C:')" title="Bao gồm ổ C: (mặc định chỉ ổ D:)">
-                        <div class="drive-checkbox" id="driveC">
-                            <svg class="check-icon" viewBox="0 0 24 24">
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                            </svg>
-                        </div>
-                        <span>C:</span>
-                    </div>
-                </div>
+                <button class="filter-icon" onclick="applyMediaFilter()" id="filter-media" title="Media">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                </button>
+                
+                <button class="filter-icon" onclick="applyDocumentFilter()" id="filter-documents" title="Tài liệu">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                    </svg>
+                </button>
+                
+                <button class="filter-icon" onclick="applyFolderFilter()" id="filter-folders" title="Thư mục">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Date Filter Buttons -->
+            <div class="filter-group">
+                <button class="date-filter-btn active" onclick="selectDateFilter('all')" id="filter-all">All</button>
+                <button class="date-filter-btn" onclick="selectDateFilter('today')" id="filter-today">Today</button>
+                <button class="date-filter-btn" onclick="selectDateFilter('week')" id="filter-week">Week</button>
+                <button class="date-filter-btn" onclick="selectDateFilter('month')" id="filter-month">Month</button>
+                <button class="date-filter-btn" onclick="selectDateFilter('year')" id="filter-year">Year</button>
+            </div>
+
+            <!-- Date Range Inputs -->
+            <div class="filter-group date-range-group">
+                <input type="date" class="date-input" id="startDate" onchange="applyDateRange()">
+                <input type="date" class="date-input" id="endDate" onchange="applyDateRange()">
             </div>
         </div>
-        
-        <!-- Quick Actions - Icons only -->
-        <section class="quick-actions" id="quickActions">
-            <div class="quick-grid">
-                <a href="#" class="quick-item" onclick="applyQuickFilter('*.jpg|*.png|*.gif|*.webp')" id="quick-images" title="Hình ảnh">
-                    <div class="quick-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
-                        </svg>
-                    </div>
-                </a>
-                
-                <a href="#" class="quick-item" onclick="applyQuickFilter('*.mp3|*.mp4|*.avi|*.mkv')" id="quick-media" title="Media">
-                    <div class="quick-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                        </svg>
-                    </div>
-                </a>
-                
-                <a href="#" class="quick-item" onclick="applyQuickFilter('*.doc|*.pdf|*.txt|*.docx')" id="quick-documents" title="Tài liệu">
-                    <div class="quick-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                        </svg>
-                    </div>
-                </a>
-                
-                <a href="#" class="quick-item" onclick="applyQuickFilter('folder:')" id="quick-folders" title="Thư mục">
-                    <div class="quick-icon">
-                        <svg viewBox="0 0 24 24">
-                            <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
-                        </svg>
-                    </div>
-                </a>
-            </div>
-        </section>
-        
-        <!-- Results -->
+    </div>
+
+    <!-- Results Container -->
+    <div class="container">
         <div class="iframe-container" id="iframeContainer">
             <div class="iframe-header">
                 <div class="iframe-actions">
@@ -167,8 +100,8 @@
             <iframe class="everything-iframe" id="everythingFrame" src=""></iframe>
         </div>
     </div>
-    
-    <!-- URL Converter Modal -->
+
+    <!-- URL Converter Modal (unchanged) -->
     <div class="modal-overlay" id="urlConverterModal">
         <div class="modal-content">
             <div class="modal-header">

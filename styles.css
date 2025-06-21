@@ -7,18 +7,18 @@
 :root {
     --primary-color: #000000;
     --secondary-color: #f7f7f8;
-    --accent-color: #000000; /* ChatGPT-style blue */
-    --success-color: #000000;
-    --border-color: #e0e0e0;
+    --accent-color: #2563eb; /* Blue for active states */
+    --success-color: #10b981;
+    --border-color: #e5e7eb;
     --text-primary: #000000;
-    --text-secondary: #676767;
-    --text-muted: #9aa0a6;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
     --bg-primary: #ffffff;
-    --bg-secondary: #f7f7f8;
-    --hover-bg: #f3f4f6; /* Light gray hover like ChatGPT */
-    --shadow: 0 2px 5px 1px rgba(64,60,67,.16);
-    --shadow-hover: 0 4px 8px 2px rgba(64,60,67,.20);
-    --radius: 12px;
+    --bg-secondary: #f9fafb;
+    --hover-bg: #f3f4f6;
+    --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    --shadow-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --radius: 8px;
     --radius-sm: 6px;
     --radius-full: 24px;
 }
@@ -28,59 +28,51 @@ body {
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
+    margin: 0;
+    padding: 0;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-}
-
-/* Search Section - Google style */
-.search-section {
-    position: relative;
-    padding: 32px 0 20px;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-.search-wrapper {
-    position: relative;
+/* New Horizontal Toolbar */
+.toolbar {
     background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-full);
-    padding: 12px 16px;
-    transition: all 0.2s ease;
-    box-shadow: var(--shadow);
-    max-width: 600px;
-    margin: 0 auto;
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.toolbar-content {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+    flex-wrap: wrap;
 }
 
-.search-wrapper:focus-within {
-    border-color: var(--border-color);
-    box-shadow: var(--shadow-hover);
+/* Search Group */
+.search-group {
+    display: flex;
+    align-items: center;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    min-width: 280px;
+    flex: 1;
+    max-width: 400px;
 }
 
-.search-wrapper:hover {
-    box-shadow: var(--shadow-hover);
-}
-
-/* Search icon */
 .search-icon {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
+    margin-right: 8px;
 }
 
 .search-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     fill: var(--text-muted);
 }
 
@@ -88,269 +80,35 @@ body {
     flex: 1;
     border: none;
     outline: none;
-    font-size: 16px;
     background: transparent;
+    font-size: 14px;
     color: var(--text-primary);
-    min-width: 0;
 }
 
 .search-input::placeholder {
     color: var(--text-muted);
 }
 
-/* Date Filter - ChatGPT-inspired */
-.date-filter {
-    position: relative;
-    flex-shrink: 0;
-}
-
-.date-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 8px;
-    border: none;
-    border-radius: var(--radius-sm);
-    background: transparent;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.date-btn:hover {
-    background: var(--hover-bg); /* Light gray hover */
-    color: var(--text-secondary);
-}
-
-.date-btn.open {
-    background: var(--hover-bg);
-    color: var(--text-secondary);
-}
-
-/* Active state - only blue text, no background */
-.date-btn.active {
-    background: transparent;
-    color: var(--accent-color); /* Blue text */
-}
-
-.date-btn.active:hover {
-    background: var(--hover-bg); /* Still allow hover effect */
-    color: var(--accent-color);
-}
-
-.date-btn svg {
-    width: 14px;
-    height: 14px;
-    fill: currentColor;
-}
-
-.dropdown-arrow {
-    width: 12px !important;
-    height: 12px !important;
-    transition: transform 0.2s ease;
-}
-
-.date-btn.open .dropdown-arrow {
-    transform: rotate(180deg);
-}
-
-.date-dropdown {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    margin-top: 8px;
-    background: var(--bg-primary);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-hover);
-    min-width: 280px;
-    display: none;
-    z-index: 1000;
-    overflow: hidden;
-}
-
-.date-dropdown.open {
-    display: block;
-}
-
-.date-section {
-    padding: 12px 0;
-}
-
-.date-section:not(:last-child) {
-    border-bottom: 1px solid var(--border-color);
-}
-
-.section-title {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    padding: 0 16px 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-/* Date Options - ChatGPT style */
-.date-option {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 16px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: transparent;
-}
-
-.date-option:hover {
-    background: var(--hover-bg); /* Light gray hover only */
-}
-
-/* Active state - blue text only, no background */
-.date-option.active {
-    background: transparent;
-    color: var(--accent-color); /* Blue text */
-}
-
-.date-option.active:hover {
-    background: var(--hover-bg); /* Allow hover effect even when active */
-    color: var(--accent-color);
-}
-
-.date-option span {
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.date-option small {
-    font-size: 11px;
-    opacity: 0.7;
-}
-
-/* Custom Date Options */
-.custom-date-options {
-    padding: 0 16px;
-}
-
-.date-range-type {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 16px;
-}
-
-.date-range-type label {
+/* Filter Groups */
+.filter-group {
     display: flex;
     align-items: center;
     gap: 8px;
-    cursor: pointer;
-    font-size: 13px;
-    padding: 6px 0;
-    transition: all 0.2s ease;
-    border-radius: var(--radius-sm);
 }
 
-.date-range-type label:hover {
-    background: var(--hover-bg);
-}
-
-.date-range-type input[type="radio"] {
-    width: 14px;
-    height: 14px;
-    accent-color: var(--accent-color);
-}
-
-.date-inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-bottom: 16px;
-}
-
-.date-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-}
-
-.date-input-group label {
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--text-secondary);
-}
-
-.date-input-group input[type="date"] {
-    padding: 8px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    font-size: 13px;
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    transition: all 0.2s ease;
-}
-
-.date-input-group input[type="date"]:focus {
-    outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
-.date-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.btn-apply, .btn-clear {
-    flex: 1;
-    padding: 8px 12px;
-    border: none;
-    border-radius: var(--radius-sm);
-    font-size: 12px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-apply {
-    background: var(--accent-color); /* Blue button */
-    color: white;
-}
-
-.btn-apply:hover {
-    background: #000000; /* Darker blue on hover */
-}
-
-.btn-clear {
-    background: transparent;
-    color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-}
-
-.btn-clear:hover {
-    background: var(--hover-bg);
-}
-
-/* Drive Selector - ChatGPT style */
-.drive-selector {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-shrink: 0;
-}
-
+/* Drive Selector */
 .drive-option {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
     transition: all 0.2s ease;
-    padding: 4px 6px;
-    border-radius: var(--radius-sm);
 }
 
 .drive-option:hover {
-    background: var(--hover-bg); /* Light gray hover */
+    background: var(--hover-bg);
 }
 
 .drive-checkbox {
@@ -366,7 +124,7 @@ body {
 }
 
 .drive-checkbox.active {
-    background: var(--accent-color); /* Blue background for checkbox */
+    background: var(--accent-color);
     border-color: var(--accent-color);
 }
 
@@ -383,81 +141,108 @@ body {
 }
 
 .drive-option span {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 500;
     color: var(--text-secondary);
-    min-width: 20px;
 }
 
-/* Drive option active state - blue text */
 .drive-option.active span {
     color: var(--accent-color);
 }
 
-/* Quick Actions - ChatGPT style */
-.quick-actions {
-    margin: 0 0 16px 0;
-    transition: all 0.3s ease;
-}
-
-.quick-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Thay đổi từ 5 thành 4 */
-    gap: 16px;
-    max-width: 600px; /* Giảm max-width */
-    margin: 0 auto;
-}
-
-.quick-item {
-    background: transparent;
+/* Filter Icons */
+.filter-icon {
+    width: 32px;
+    height: 32px;
     border: none;
-    padding: 12px 8px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    color: inherit;
-    text-align: center;
+    background: transparent;
     border-radius: var(--radius-sm);
-}
-
-.quick-item:hover {
-    background: var(--hover-bg); /* Light gray hover */
-    transform: translateY(-2px);
-}
-
-.quick-icon {
-    width: 24px;
-    height: 24px;
-    margin: 0 auto 8px;
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-muted);
 }
 
-.quick-icon svg {
-    width: 24px;
-    height: 24px;
-    fill: var(--text-primary);
+.filter-icon:hover {
+    background: var(--hover-bg);
+    color: var(--text-secondary);
 }
 
-.quick-title {
-    font-size: 14px;
+.filter-icon.active {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--accent-color);
+}
+
+.filter-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* Date Filter Buttons */
+.date-filter-btn {
+    padding: 6px 12px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
     font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.date-filter-btn:hover {
+    background: var(--hover-bg);
     color: var(--text-primary);
 }
 
-/* Simplified iframe container */
+.date-filter-btn.active {
+    background: transparent;
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Date Range Inputs */
+.date-range-group {
+    margin-left: auto; /* Push to right */
+}
+
+.date-input {
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    width: 140px;
+}
+
+.date-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Container for results */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Results iframe container */
 .iframe-container {
     background: var(--bg-primary);
     border-radius: var(--radius);
     overflow: hidden;
-    margin: 8px 0;
+    margin: 16px 0;
     display: none;
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    max-width: none;
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
-    border: 1px solid var(--border-color); /* Thêm border tổng thể */
 }
 
 .iframe-container.fullscreen {
@@ -471,46 +256,33 @@ body {
     width: 100vw;
     height: 100vh;
     border-radius: 0;
-    border: none; /* Bỏ border khi fullscreen */
+    border: none;
 }
 
-/* Updated iframe header styles */
 .iframe-header {
     background: var(--bg-primary);
-    padding: 8px 16px; /* Giảm padding từ 12px xuống 8px cho gọn hơn */
+    padding: 8px 16px;
     display: flex;
     align-items: center;
-    justify-content: flex-end; /* Chuyển icons sang phải */
+    justify-content: flex-end;
     gap: 8px;
-    /* Bỏ border-bottom */
-    /* border-bottom: 1px solid var(--border-color); */
-    box-shadow: none; /* Bỏ shadow cũng */
+    border-bottom: 1px solid var(--border-color);
 }
 
 .iframe-container.fullscreen .iframe-header {
     position: sticky;
     top: 0;
     z-index: 1001;
-    background: var(--bg-primary);
-    /* Bỏ border-bottom cho fullscreen mode */
-    /* border-bottom: 1px solid var(--border-color); */
-}
-
-/* Remove unused styles since title and url are removed */
-.iframe-title,
-.iframe-url {
-    display: none; /* Ẩn hoàn toàn nếu còn sót lại */
 }
 
 .iframe-actions {
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-left: auto; /* Đẩy về phải nếu có content khác */
 }
 
 .iframe-fullscreen, .iframe-close {
-    width: 28px; /* Tăng size một chút để dễ click */
+    width: 28px;
     height: 28px;
     border: none;
     background: transparent;
@@ -529,30 +301,29 @@ body {
 }
 
 .iframe-fullscreen svg, .iframe-close svg {
-    width: 18px; /* Tăng size icon một chút */
-    height: 18px;
+    width: 16px;
+    height: 16px;
     fill: currentColor;
 }
 
 .everything-iframe {
     width: 100%;
-    height: calc(100vh - 120px);
-    min-height: 750px;
+    height: calc(100vh - 200px);
+    min-height: 600px;
     border: none;
     background: var(--bg-primary);
 }
 
 .iframe-container.fullscreen .everything-iframe {
-    height: calc(100vh - 44px); /* Điều chỉnh cho header nhỏ hơn */
+    height: calc(100vh - 45px);
     min-height: unset;
 }
 
-body.fullscreen-active .search-section,
-body.fullscreen-active .quick-actions {
+body.fullscreen-active .toolbar {
     display: none;
 }
 
-/* URL Converter Modal styles remain similar but with ChatGPT colors */
+/* URL Converter Modal - unchanged styles */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -716,10 +487,6 @@ body.fullscreen-active .quick-actions {
     fill: currentColor;
 }
 
-.copy-status .check-icon {
-    color: white;
-}
-
 .usage-hint {
     margin-top: 16px;
     padding: 12px 16px;
@@ -745,139 +512,83 @@ body.fullscreen-active .quick-actions {
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
-@media (max-width: 768px) {
-    .container {
-        padding: 0 12px;
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .toolbar-content {
+        gap: 16px;
     }
     
-    .search-section {
-        padding: 24px 0 16px;
-    }
-    
-    .search-wrapper {
-        padding: 10px 12px;
-        gap: 8px;
-    }
-    
-    .search-icon svg {
-        width: 18px;
-        height: 18px;
-    }
-    
-    .date-filter {
-        order: 3;
-    }
-    
-    .drive-selector {
-        gap: 6px;
-        order: 2;
-    }
-    
-    .date-dropdown {
-        min-width: 260px;
-        right: -20px;
-    }
-    
-    .drive-option span {
-        font-size: 11px;
-        min-width: 18px;
-    }
-    
-    .drive-checkbox {
-        width: 14px;
-        height: 14px;
-    }
-    
-    .check-icon {
-        width: 8px;
-        height: 8px;
-    }
-    
-    .quick-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 cột trên mobile */
-        gap: 12px;
-        max-width: 400px;
-    }
-    
-    .iframe-header {
-        padding: 6px 12px;
-    }
-
-    .iframe-fullscreen, .iframe-close {
-        width: 32px;
-        height: 32px;
-    }
-
-    .iframe-fullscreen svg, .iframe-close svg {
-        width: 20px;
-        height: 20px;
-    }
-
-    .everything-iframe {
-        height: calc(100vh - 100px);
-        min-height: 500px;
-    }
-
-    .iframe-container {
-        margin-left: calc(50% - 50vw + 12px);
-        width: calc(100vw - 24px);
-    }
-
-    .iframe-container.fullscreen {
+    .date-range-group {
         margin-left: 0;
-        width: 100vw;
-    }
-
-    .iframe-container.fullscreen .everything-iframe {
-        height: calc(100vh - 44px);
-    }
-    
-    .modal-content {
-        width: 95%;
-        margin: 0 12px;
-    }
-    
-    .modal-body {
-        padding: 16px;
+        flex-basis: 100%;
+        margin-top: 8px;
+        justify-content: flex-end;
     }
 }
 
+@media (max-width: 768px) {
+    .toolbar {
+        padding: 8px 16px;
+    }
+    
+    .toolbar-content {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .search-group {
+        min-width: unset;
+        max-width: none;
+    }
+    
+    .filter-group {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .date-range-group {
+        margin-left: 0;
+        justify-content: center;
+        gap: 12px;
+    }
+    
+    .date-input {
+        width: 120px;
+    }
+    
+    .container {
+        padding: 0 16px;
+    }
+}
 
 @media (max-width: 480px) {
-    .iframe-header {
+    .toolbar {
+        padding: 8px 12px;
+    }
+    
+    .filter-icon {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .filter-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .date-filter-btn {
         padding: 4px 8px;
-    }
-    .quick-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
-    }
-    
-    .quick-item {
-        padding: 8px 4px;
-    }
-    
-    .quick-title {
         font-size: 12px;
     }
     
-    .date-dropdown {
-        min-width: 240px;
-        right: -30px;
-    }
-    
-    .drive-selector {
-        gap: 4px;
-    }
-    
-    .drive-option span {
-        font-size: 10px;
-        min-width: 16px;
-    }
-    
-    .search-wrapper {
-        padding: 8px 10px;
+    .date-input {
+        width: 100px;
+        font-size: 12px;
+        padding: 4px 6px;
     }
 }
+
 /* Toast Notifications */
 .toast {
     position: fixed;
@@ -894,13 +605,10 @@ body.fullscreen-active .quick-actions {
     box-shadow: var(--shadow-hover);
     max-width: 350px;
     word-wrap: break-word;
-    display: flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .toast-success {
-    background: #10b981;
+    background: var(--success-color);
 }
 
 .toast-error {
@@ -909,34 +617,4 @@ body.fullscreen-active .quick-actions {
 
 .toast-info {
     background: var(--accent-color);
-}
-
-/* Enhanced search input states */
-.search-input.url-detected {
-    color: var(--accent-color);
-    font-weight: 500;
-}
-
-.search-input.convert-success {
-    color: var(--success-color);
-}
-
-/* Additional responsive improvements */
-@media (max-width: 768px) {
-    .toast {
-        top: 10px;
-        right: 10px;
-        left: 10px;
-        max-width: none;
-        transform: translateY(-100%);
-    }
-    
-    .toast.show {
-        transform: translateY(0);
-    }
-}
-
-/* Success color variable */
-:root {
-    --success-color: #10b981;
 }
