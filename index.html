@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everything Explorer</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Search Section - Google style -->
+        <div class="search-section" id="searchSection">
+            <div class="search-wrapper">
+                <div class="search-icon">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M15.5 14h-.79l-.28-.27c.98-1.14 1.57-2.62 1.57-4.23 0-3.59-2.91-6.5-6.5-6.5s-6.5 2.91-6.5 6.5 2.91 6.5 6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0c-2.49 0-4.5-2.01-4.5-4.5s2.01-4.5 4.5-4.5 4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5z"/>
+                    </svg>
+                </div>
+                <input type="text" class="search-input" placeholder="" id="searchInput" autocomplete="off" title="">
+                
+                <!-- Date Filter -->
+                <div class="date-filter" id="dateFilter">
+                    <button class="date-btn" onclick="toggleDateDropdown()" title="Lọc theo ngày" id="dateBtn">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                        </svg>
+                        <span id="selectedDateText">Tất cả</span>
+                        <svg class="dropdown-arrow" viewBox="0 0 24 24">
+                            <path d="M7 10l5 5 5-5z"/>
+                        </svg>
+                    </button>
+                    <div class="date-dropdown" id="dateDropdown">
+                        <!-- Quick Date Options -->
+                        <div class="date-section">
+                            <div class="section-title">Nhanh</div>
+                            <div class="date-option active" onclick="selectQuickDate('all', 'Tất cả')">
+                                <span>Tất cả thời gian</span>
+                            </div>
+                            <div class="date-option" onclick="selectQuickDate('today', 'Hôm nay')">
+                                <span>Hôm nay</span>
+                                <small id="todayDate"></small>
+                            </div>
+                            <div class="date-option" onclick="selectQuickDate('thisweek', 'Tuần này')">
+                                <span>Tuần này</span>
+                                <small id="thisWeekRange"></small>
+                            </div>
+                            <div class="date-option" onclick="selectQuickDate('thismonth', 'Tháng này')">
+                                <span>Tháng này</span>
+                                <small id="thisMonthRange"></small>
+                            </div>
+                            <div class="date-option" onclick="selectQuickDate('thisyear', 'Năm này')">
+                                <span>Năm này</span>
+                                <small>2025</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Custom Date Range -->
+                        <div class="date-section">
+                            <div class="section-title">Tùy chỉnh</div>
+                            <div class="custom-date-options">
+                                <div class="date-range-type">
+                                    <label>
+                                        <input type="radio" name="dateType" value="range" checked onchange="updateDateInputs()">
+                                        <span>Trong khoảng</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="dateType" value="after" onchange="updateDateInputs()">
+                                        <span>Sau ngày</span>
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="dateType" value="before" onchange="updateDateInputs()">
+                                        <span>Trước ngày</span>
+                                    </label>
+                                </div>
+                                
+                                <div class="date-inputs" id="dateInputs">
+                                    <div class="date-input-group">
+                                        <label>Từ ngày:</label>
+                                        <input type="date" id="startDate" onchange="updateCustomDate()">
+                                    </div>
+                                    <div class="date-input-group">
+                                        <label>Đến ngày:</label>
+                                        <input type="date" id="endDate" onchange="updateCustomDate()">
+                                    </div>
+                                </div>
+                                
+                                <div class="date-actions">
+                                    <button class="btn-apply" onclick="applyCustomDate()">Áp dụng</button>
+                                    <button class="btn-clear" onclick="clearDateFilter()">Xóa bộ lọc</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Drive Selector - Simplified to only C: drive toggle -->
+                <div class="drive-selector" id="driveSelector">
+                    <div class="drive-option" data-drive="C:" onclick="toggleDrive('C:')" title="Bao gồm ổ C: (mặc định chỉ ổ D:)">
+                        <div class="drive-checkbox" id="driveC">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                        </div>
+                        <span>C:</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quick Actions - Icons only -->
+        <section class="quick-actions" id="quickActions">
+            <div class="quick-grid">
+                <a href="#" class="quick-item" onclick="applyQuickFilter('*.jpg|*.png|*.gif|*.webp')" id="quick-images" title="Hình ảnh">
+                    <div class="quick-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="#" class="quick-item" onclick="applyQuickFilter('*.mp3|*.mp4|*.avi|*.mkv')" id="quick-media" title="Media">
+                    <div class="quick-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="#" class="quick-item" onclick="applyQuickFilter('*.doc|*.pdf|*.txt|*.docx')" id="quick-documents" title="Tài liệu">
+                    <div class="quick-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                    </div>
+                </a>
+                
+                <a href="#" class="quick-item" onclick="applyQuickFilter('folder:')" id="quick-folders" title="Thư mục">
+                    <div class="quick-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+        </section>
+        
+        <!-- Results -->
+        <div class="iframe-container" id="iframeContainer">
+            <div class="iframe-header">
+                <div class="iframe-actions">
+                    <button class="iframe-fullscreen" onclick="toggleFullscreen()" title="Toàn màn hình" id="fullscreenBtn">
+                        <svg viewBox="0 0 24 24" class="expand-icon">
+                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                        </svg>
+                        <svg viewBox="0 0 24 24" class="collapse-icon" style="display: none;">
+                            <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+                        </svg>
+                    </button>
+                    <button class="iframe-close" onclick="closeIframe()" title="Đóng">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <iframe class="everything-iframe" id="everythingFrame" src=""></iframe>
+        </div>
+    </div>
+    
+    <!-- URL Converter Modal -->
+    <div class="modal-overlay" id="urlConverterModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Convert URL to Local Path</h3>
+                <button class="modal-close" onclick="closeUrlConverter()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="urlInput">Paste Everything URL:</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="urlInput" placeholder="Paste URL và nhấn Enter..." />
+                        <button class="paste-btn" onclick="pasteFromClipboard()" title="Paste">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="pathOutput">Local Path:</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="pathOutput" readonly placeholder="Converted path will appear here..." />
+                        <div class="copy-status" id="copyStatus">
+                            <svg class="copy-icon" viewBox="0 0 24 24">
+                                <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+                            </svg>
+                            <svg class="check-icon" viewBox="0 0 24 24" style="display: none;">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                            <span class="status-text">Ready</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="usage-hint">
+                    <p><strong>Tip:</strong> Paste URL và nhấn <kbd>Enter</kbd> để convert và copy tự động</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
