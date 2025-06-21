@@ -5,12 +5,63 @@ let selectedDateFilter = 'all';
 let hasResults = false;
 let isFullscreen = false;
 let searchOnCDrive = false;
+let sidebarOpen = false;
 
 // Initialize when page loads
 window.addEventListener('load', () => {
     document.getElementById('searchInput').focus();
     updateSearchTitle();
+    setupClearButton();
 });
+
+// Setup clear button functionality
+function setupClearButton() {
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+    
+    searchInput.addEventListener('input', function() {
+        if (this.value.trim()) {
+            clearBtn.style.display = 'flex';
+        } else {
+            clearBtn.style.display = 'none';
+        }
+    });
+}
+
+// Clear search function
+function clearSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+    
+    searchInput.value = '';
+    clearBtn.style.display = 'none';
+    
+    // Clear results and reset filters
+    closeIframe();
+    currentUserQuery = '';
+    currentFilter = '';
+    resetSearchVisual();
+    resetFilterUI();
+    
+    // Focus back to search input
+    searchInput.focus();
+}
+
+// Toggle sidebar (ChatGPT style)
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    
+    sidebarOpen = !sidebarOpen;
+    
+    if (sidebarOpen) {
+        sidebar.classList.add('open');
+        mainContent.classList.add('with-sidebar');
+    } else {
+        sidebar.classList.remove('open');
+        mainContent.classList.remove('with-sidebar');
+    }
+}
 
 // Search functionality
 document.getElementById('searchInput').addEventListener('keypress', function(e) {
@@ -65,22 +116,53 @@ function isLocalhostUrl(input) {
     return input.includes('localhost') || input.startsWith('local-file-open://');
 }
 
-// Convert URL directly and copy to clipboard
+// Convert URL directly and copy to clipboard - MINIMAL FEEDBACK
 function convertUrlDirectly(url) {
     const localPath = convertUrlToLocalPath(url);
     
     if (localPath) {
         navigator.clipboard.writeText(localPath)
             .then(() => {
-                showConvertSuccess(localPath);
+                // Minimal visual feedback - just brief input color change
+                showMinimalSuccess();
                 document.getElementById('searchInput').value = '';
+                document.getElementById('clearBtn').style.display = 'none';
                 resetSearchVisual();
             })
             .catch(err => {
                 console.error('Cannot copy to clipboard: ', err);
-                showConvertError();
+                // Minimal error feedback
+                showMinimalError();
             });
     }
+}
+
+// Minimal success feedback - no toast, just brief color change
+function showMinimalSuccess() {
+    const searchInput = document.getElementById('searchInput');
+    const originalPlaceholder = searchInput.placeholder;
+    
+    searchInput.placeholder = '✓ Đã copy';
+    searchInput.style.color = 'var(--success-color)';
+    
+    setTimeout(() => {
+        searchInput.placeholder = originalPlaceholder;
+        searchInput.style.color = '';
+    }, 1500);
+}
+
+// Minimal error feedback
+function showMinimalError() {
+    const searchInput = document.getElementById('searchInput');
+    const originalPlaceholder = searchInput.placeholder;
+    
+    searchInput.placeholder = '✗ Lỗi copy';
+    searchInput.style.color = '#ef4444';
+    
+    setTimeout(() => {
+        searchInput.placeholder = originalPlaceholder;
+        searchInput.style.color = '';
+    }, 1500);
 }
 
 // Visual feedback for URL detection
@@ -93,6 +175,7 @@ function updateSearchVisualFeedback(query) {
             <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M16.5,11H13V7.5H11V11H7.5V13H11V16.5H13V13H16.5V11Z"/>
         `;
         searchInput.placeholder = 'Nhấn Enter để convert URL';
+        searchIcon.style.fill = 'var(--accent-color)';
     } else {
         resetSearchVisual();
     }
@@ -107,6 +190,7 @@ function resetSearchVisual() {
         <path d="M15.5 14h-.79l-.28-.27c.98-1.14 1.57-2.62 1.57-4.23 0-3.59-2.91-6.5-6.5-6.5s-6.5 2.91-6.5 6.5 2.91 6.5 6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0c-2.49 0-4.5-2.01-4.5-4.5s2.01-4.5 4.5-4.5 4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5z"/>
     `;
     searchInput.placeholder = 'Tìm kiếm';
+    searchIcon.style.fill = '';
 }
 
 // Drive selector functions
@@ -131,15 +215,20 @@ function toggleDrive(drive) {
     }
 }
 
-// Date filter functions
+// Date filter functions with sidebar sync
 function selectDateFilter(period) {
     selectedDateFilter = period;
     
-    // Update UI
+    // Update toolbar UI
     document.querySelectorAll('.date-filter-btn').forEach(btn => {
         btn.classList.remove('active');
     });
     document.getElementById(`filter-${period}`).classList.add('active');
+    
+    // Update sidebar UI
+    document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.classList.remove('active');
+    });
     
     // Clear custom date inputs when using preset filters
     if (period !== 'custom') {
@@ -163,6 +252,9 @@ function applyDateRange() {
         // Update UI - remove active from preset filters
         document.querySelectorAll('.date-filter-btn').forEach(btn => {
             btn.classList.remove('active');
+        });
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+            item.classList.remove('active');
         });
         
         if (hasResults) {
@@ -328,71 +420,6 @@ function resetFilterUI() {
     currentFilter = '';
 }
 
-// Show convert success notification
-function showConvertSuccess(localPath) {
-    showToast('✓ Đã copy đường dẫn', 'success');
-    
-    const searchInput = document.getElementById('searchInput');
-    const originalPlaceholder = searchInput.placeholder;
-    
-    searchInput.placeholder = '✓ Đã copy đường dẫn';
-    
-    setTimeout(() => {
-        searchInput.placeholder = originalPlaceholder;
-    }, 2000);
-}
-
-// Show convert error
-function showConvertError() {
-    showToast('❌ Lỗi khi copy vào clipboard', 'error');
-}
-
-// Toast notification
-function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = `toast toast-${type}`;
-    toast.innerHTML = message;
-    
-    const colors = {
-        success: '#10b981',
-        error: '#ef4444',
-        info: '#2563eb'
-    };
-    
-    Object.assign(toast.style, {
-        position: 'fixed',
-        top: '20px',
-        left: '50%',
-        transform: 'translateX(-50%) translateY(-100%)',
-        padding: '8px 16px',
-        color: 'white',
-        backgroundColor: colors[type] || colors.info,
-        fontSize: '14px',
-        fontWeight: '500',
-        zIndex: '9999',
-        borderRadius: '6px',
-        transition: 'transform 0.3s ease',
-        textAlign: 'center',
-        whiteSpace: 'nowrap',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-    });
-    
-    document.body.appendChild(toast);
-    
-    setTimeout(() => {
-        toast.style.transform = 'translateX(-50%) translateY(0)';
-    }, 100);
-    
-    setTimeout(() => {
-        toast.style.transform = 'translateX(-50%) translateY(-100%)';
-        setTimeout(() => {
-            if (document.body.contains(toast)) {
-                document.body.removeChild(toast);
-            }
-        }, 300);
-    }, 2500);
-}
-
 // Update search title
 function updateSearchTitle() {
     const searchInput = document.getElementById('searchInput');
@@ -487,7 +514,7 @@ function closeIframe() {
     resetFilterUI();
 }
 
-// URL Converter functions (unchanged)
+// URL Converter functions (unchanged but with minimal feedback)
 function openUrlConverter() {
     document.getElementById('urlConverterModal').classList.add('open');
     document.getElementById('urlInput').focus();
@@ -635,11 +662,29 @@ document.addEventListener('keydown', function(e) {
         e.preventDefault();
         openUrlConverter();
     }
+    
+    // Sidebar toggle shortcut
+    if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+        e.preventDefault();
+        toggleSidebar();
+    }
 });
 
 // Close modal when clicking overlay
 document.getElementById('urlConverterModal').addEventListener('click', function(e) {
     if (e.target === this) {
         closeUrlConverter();
+    }
+});
+
+// Close sidebar when clicking outside on mobile
+document.addEventListener('click', function(e) {
+    const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.querySelector('.sidebar-toggle');
+    
+    if (sidebarOpen && !sidebar.contains(e.target) && !toggleBtn.contains(e.target)) {
+        if (window.innerWidth <= 1024) {
+            toggleSidebar();
+        }
     }
 });

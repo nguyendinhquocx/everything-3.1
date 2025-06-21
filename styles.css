@@ -7,7 +7,7 @@
 :root {
     --primary-color: #000000;
     --secondary-color: #f7f7f8;
-    --accent-color: #2563eb; /* Blue for active states */
+    --accent-color: #2563eb;
     --success-color: #10b981;
     --border-color: #e5e7eb;
     --text-primary: #000000;
@@ -18,9 +18,12 @@
     --hover-bg: #f3f4f6;
     --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     --shadow-hover: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --radius: 8px;
-    --radius-sm: 6px;
-    --radius-full: 24px;
+    /* More Rounded - Increased border radius */
+    --radius: 16px;
+    --radius-md: 12px;
+    --radius-sm: 10px;
+    --radius-xs: 8px;
+    --radius-full: 50px;
 }
 
 body {
@@ -30,13 +33,122 @@ body {
     line-height: 1.6;
     margin: 0;
     padding: 0;
+    display: flex;
+    min-height: 100vh;
 }
 
-/* New Horizontal Toolbar */
+/* ChatGPT-style Sidebar */
+.sidebar {
+    width: 260px;
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: -260px;
+    top: 0;
+    height: 100vh;
+    transition: left 0.3s ease;
+    z-index: 200;
+}
+
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sidebar-toggle {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.sidebar-toggle:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+}
+
+.sidebar-toggle svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+.app-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.sidebar-content {
+    flex: 1;
+    padding: 20px 0;
+}
+
+.sidebar-section {
+    padding: 0 20px;
+}
+
+.sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.sidebar-item:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+}
+
+.sidebar-item.active {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--accent-color);
+}
+
+.sidebar-item svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 0;
+    transition: margin-left 0.3s ease;
+}
+
+.main-content.with-sidebar {
+    margin-left: 260px;
+}
+
+/* Horizontal Toolbar - More Rounded */
 .toolbar {
     background: var(--bg-primary);
     border-bottom: 1px solid var(--border-color);
-    padding: 12px 20px;
+    padding: 16px 24px; /* Increased padding */
     position: sticky;
     top: 0;
     z-index: 100;
@@ -45,34 +157,41 @@ body {
 .toolbar-content {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 20px; /* Increased gap like ChatGPT */
     max-width: 1400px;
     margin: 0 auto;
     flex-wrap: wrap;
 }
 
-/* Search Group */
+/* Search Group with Clear Button */
 .search-group {
     display: flex;
     align-items: center;
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    padding: 8px 12px;
-    min-width: 280px;
+    border-radius: var(--radius-md); /* More rounded */
+    padding: 12px 16px; /* Increased padding */
+    min-width: 320px; /* Wider like ChatGPT */
     flex: 1;
-    max-width: 400px;
+    max-width: 500px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.search-group:focus-within {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .search-icon {
     display: flex;
     align-items: center;
-    margin-right: 8px;
+    margin-right: 12px; /* Increased margin */
 }
 
 .search-icon svg {
-    width: 16px;
-    height: 16px;
+    width: 18px; /* Slightly larger */
+    height: 18px;
     fill: var(--text-muted);
 }
 
@@ -81,28 +200,59 @@ body {
     border: none;
     outline: none;
     background: transparent;
-    font-size: 14px;
+    font-size: 15px; /* Slightly larger font */
     color: var(--text-primary);
+    padding-right: 32px; /* Space for clear button */
 }
 
 .search-input::placeholder {
     color: var(--text-muted);
 }
 
-/* Filter Groups */
+/* Clear Button inside Search */
+.clear-btn {
+    position: absolute;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-xs);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: all 0.2s ease;
+    opacity: 0.6;
+}
+
+.clear-btn:hover {
+    background: var(--hover-bg);
+    color: var(--text-secondary);
+    opacity: 1;
+}
+
+.clear-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+}
+
+/* Filter Groups - More Rounded */
 .filter-group {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px; /* Increased gap */
 }
 
-/* Drive Selector */
+/* Drive Selector - More Rounded */
 .drive-option {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    border-radius: var(--radius-sm);
+    gap: 8px;
+    padding: 10px 14px; /* Increased padding */
+    border-radius: var(--radius-sm); /* More rounded */
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -112,10 +262,10 @@ body {
 }
 
 .drive-checkbox {
-    width: 16px;
-    height: 16px;
+    width: 18px; /* Slightly larger */
+    height: 18px;
     border: 1px solid var(--border-color);
-    border-radius: 3px;
+    border-radius: 6px; /* More rounded */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -129,8 +279,8 @@ body {
 }
 
 .check-icon {
-    width: 10px;
-    height: 10px;
+    width: 12px; /* Slightly larger */
+    height: 12px;
     fill: white;
     opacity: 0;
     transition: opacity 0.2s ease;
@@ -141,7 +291,7 @@ body {
 }
 
 .drive-option span {
-    font-size: 13px;
+    font-size: 14px; /* Slightly larger */
     font-weight: 500;
     color: var(--text-secondary);
 }
@@ -150,13 +300,13 @@ body {
     color: var(--accent-color);
 }
 
-/* Filter Icons */
+/* Filter Icons - More Rounded */
 .filter-icon {
-    width: 32px;
-    height: 32px;
+    width: 40px; /* Larger like ChatGPT */
+    height: 40px;
     border: none;
     background: transparent;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm); /* More rounded */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -176,18 +326,18 @@ body {
 }
 
 .filter-icon svg {
-    width: 18px;
-    height: 18px;
+    width: 20px; /* Slightly larger */
+    height: 20px;
     fill: currentColor;
 }
 
-/* Date Filter Buttons */
+/* Date Filter Buttons - More Rounded */
 .date-filter-btn {
-    padding: 6px 12px;
+    padding: 10px 16px; /* Increased padding */
     border: none;
     background: transparent;
-    border-radius: var(--radius-sm);
-    font-size: 13px;
+    border-radius: var(--radius-sm); /* More rounded */
+    font-size: 14px; /* Slightly larger */
     font-weight: 500;
     color: var(--text-secondary);
     cursor: pointer;
@@ -206,19 +356,20 @@ body {
     font-weight: 600;
 }
 
-/* Date Range Inputs */
+/* Date Range Inputs - More Rounded */
 .date-range-group {
-    margin-left: auto; /* Push to right */
+    margin-left: auto;
 }
 
 .date-input {
-    padding: 6px 10px;
+    padding: 10px 14px; /* Increased padding */
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    font-size: 13px;
+    border-radius: var(--radius-sm); /* More rounded */
+    font-size: 14px; /* Slightly larger */
     background: var(--bg-primary);
     color: var(--text-primary);
-    width: 140px;
+    width: 150px; /* Slightly wider */
+    transition: all 0.2s ease;
 }
 
 .date-input:focus {
@@ -231,18 +382,19 @@ body {
 .container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 24px; /* Increased padding */
 }
 
-/* Results iframe container */
+/* Results iframe container - NO BORDER */
 .iframe-container {
     background: var(--bg-primary);
-    border-radius: var(--radius);
+    border-radius: 0; /* Remove border radius */
     overflow: hidden;
-    margin: 16px 0;
+    margin: 20px 0; /* Increased margin */
     display: none;
-    border: 1px solid var(--border-color);
+    border: none; /* Remove border completely */
     transition: all 0.3s ease;
+    box-shadow: none; /* Remove shadow */
 }
 
 .iframe-container.fullscreen {
@@ -261,11 +413,11 @@ body {
 
 .iframe-header {
     background: var(--bg-primary);
-    padding: 8px 16px;
+    padding: 12px 20px; /* Increased padding */
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
+    gap: 12px; /* Increased gap */
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -278,16 +430,16 @@ body {
 .iframe-actions {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px; /* Increased gap */
 }
 
 .iframe-fullscreen, .iframe-close {
-    width: 28px;
-    height: 28px;
+    width: 36px; /* Larger buttons */
+    height: 36px;
     border: none;
     background: transparent;
     cursor: pointer;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm); /* More rounded */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -301,21 +453,21 @@ body {
 }
 
 .iframe-fullscreen svg, .iframe-close svg {
-    width: 16px;
-    height: 16px;
+    width: 18px; /* Slightly larger */
+    height: 18px;
     fill: currentColor;
 }
 
 .everything-iframe {
     width: 100%;
-    height: calc(100vh - 200px);
+    height: calc(100vh - 220px); /* Adjusted height */
     min-height: 600px;
     border: none;
     background: var(--bg-primary);
 }
 
 .iframe-container.fullscreen .everything-iframe {
-    height: calc(100vh - 45px);
+    height: calc(100vh - 60px); /* Adjusted for larger header */
     min-height: unset;
 }
 
@@ -323,7 +475,11 @@ body.fullscreen-active .toolbar {
     display: none;
 }
 
-/* URL Converter Modal - unchanged styles */
+body.fullscreen-active .sidebar {
+    display: none;
+}
+
+/* URL Converter Modal - More Rounded */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -344,7 +500,7 @@ body.fullscreen-active .toolbar {
 
 .modal-content {
     background: var(--bg-primary);
-    border-radius: var(--radius);
+    border-radius: var(--radius); /* More rounded */
     box-shadow: var(--shadow-hover);
     width: 90%;
     max-width: 600px;
@@ -356,7 +512,7 @@ body.fullscreen-active .toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 20px 24px;
+    padding: 24px 28px; /* Increased padding */
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -367,12 +523,12 @@ body.fullscreen-active .toolbar {
 }
 
 .modal-close {
-    width: 32px;
-    height: 32px;
+    width: 36px; /* Larger */
+    height: 36px;
     border: none;
     background: transparent;
     cursor: pointer;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm); /* More rounded */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -386,24 +542,25 @@ body.fullscreen-active .toolbar {
 }
 
 .modal-close svg {
-    width: 16px;
-    height: 16px;
+    width: 18px; /* Slightly larger */
+    height: 18px;
     fill: currentColor;
 }
 
 .modal-body {
-    padding: 24px;
+    padding: 28px; /* Increased padding */
 }
 
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: 24px; /* Increased margin */
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 10px; /* Increased margin */
     font-weight: 500;
     color: var(--text-primary);
+    font-size: 15px; /* Slightly larger */
 }
 
 .input-wrapper {
@@ -414,10 +571,10 @@ body.fullscreen-active .toolbar {
 
 .input-wrapper input {
     flex: 1;
-    padding: 12px 50px 12px 16px;
+    padding: 14px 50px 14px 18px; /* Increased padding */
     border: 1px solid var(--border-color);
-    border-radius: var(--radius-sm);
-    font-size: 14px;
+    border-radius: var(--radius-sm); /* More rounded */
+    font-size: 15px; /* Slightly larger */
     background: var(--bg-primary);
     color: var(--text-primary);
     transition: all 0.2s ease;
@@ -436,11 +593,11 @@ body.fullscreen-active .toolbar {
 
 .paste-btn {
     position: absolute;
-    right: 8px;
-    width: 32px;
-    height: 32px;
+    right: 10px; /* Increased position */
+    width: 36px; /* Larger */
+    height: 36px;
     border: none;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm); /* More rounded */
     background: transparent;
     color: var(--text-muted);
     cursor: pointer;
@@ -456,22 +613,22 @@ body.fullscreen-active .toolbar {
 }
 
 .paste-btn svg {
-    width: 16px;
-    height: 16px;
+    width: 18px; /* Slightly larger */
+    height: 18px;
     fill: currentColor;
 }
 
 .copy-status {
     position: absolute;
-    right: 8px;
+    right: 10px; /* Increased position */
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 10px;
-    border-radius: var(--radius-sm);
+    gap: 8px; /* Increased gap */
+    padding: 8px 12px; /* Increased padding */
+    border-radius: var(--radius-sm); /* More rounded */
     background: var(--bg-secondary);
     color: var(--text-muted);
-    font-size: 12px;
+    font-size: 13px; /* Slightly larger */
     font-weight: 500;
     transition: all 0.3s ease;
 }
@@ -482,31 +639,31 @@ body.fullscreen-active .toolbar {
 }
 
 .copy-status svg {
-    width: 14px;
-    height: 14px;
+    width: 16px; /* Slightly larger */
+    height: 16px;
     fill: currentColor;
 }
 
 .usage-hint {
-    margin-top: 16px;
-    padding: 12px 16px;
+    margin-top: 20px; /* Increased margin */
+    padding: 16px 20px; /* Increased padding */
     background: var(--bg-secondary);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-sm); /* More rounded */
     border-left: 3px solid var(--accent-color);
 }
 
 .usage-hint p {
     margin: 0;
-    font-size: 13px;
+    font-size: 14px; /* Slightly larger */
     color: var(--text-secondary);
 }
 
 .usage-hint kbd {
     background: var(--bg-primary);
     border: 1px solid var(--border-color);
-    border-radius: 3px;
-    padding: 2px 6px;
-    font-size: 11px;
+    border-radius: 6px; /* More rounded */
+    padding: 3px 8px; /* Increased padding */
+    font-size: 12px; /* Slightly larger */
     font-family: monospace;
     color: var(--text-primary);
     box-shadow: 0 1px 2px rgba(0,0,0,0.1);
@@ -521,20 +678,28 @@ body.fullscreen-active .toolbar {
     .date-range-group {
         margin-left: 0;
         flex-basis: 100%;
-        margin-top: 8px;
+        margin-top: 12px; /* Increased margin */
         justify-content: flex-end;
+    }
+    
+    .sidebar {
+        display: none; /* Hide sidebar on tablets */
+    }
+    
+    .main-content {
+        margin-left: 0;
     }
 }
 
 @media (max-width: 768px) {
     .toolbar {
-        padding: 8px 16px;
+        padding: 12px 20px; /* Increased padding */
     }
     
     .toolbar-content {
         flex-direction: column;
         align-items: stretch;
-        gap: 12px;
+        gap: 16px; /* Increased gap */
     }
     
     .search-group {
@@ -550,71 +715,43 @@ body.fullscreen-active .toolbar {
     .date-range-group {
         margin-left: 0;
         justify-content: center;
-        gap: 12px;
+        gap: 16px; /* Increased gap */
     }
     
     .date-input {
-        width: 120px;
+        width: 140px; /* Slightly wider */
     }
     
     .container {
-        padding: 0 16px;
+        padding: 0 20px; /* Increased padding */
     }
 }
 
 @media (max-width: 480px) {
     .toolbar {
-        padding: 8px 12px;
+        padding: 10px 16px; /* Increased padding */
     }
     
     .filter-icon {
-        width: 28px;
-        height: 28px;
+        width: 36px; /* Slightly smaller on mobile */
+        height: 36px;
     }
     
     .filter-icon svg {
-        width: 16px;
-        height: 16px;
+        width: 18px;
+        height: 18px;
     }
     
     .date-filter-btn {
-        padding: 4px 8px;
-        font-size: 12px;
+        padding: 8px 12px; /* Increased padding */
+        font-size: 13px;
     }
     
     .date-input {
-        width: 100px;
-        font-size: 12px;
-        padding: 4px 6px;
+        width: 120px;
+        font-size: 13px;
+        padding: 8px 10px; /* Increased padding */
     }
 }
 
-/* Toast Notifications */
-.toast {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 12px 20px;
-    border-radius: var(--radius-sm);
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    z-index: 9999;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    box-shadow: var(--shadow-hover);
-    max-width: 350px;
-    word-wrap: break-word;
-}
-
-.toast-success {
-    background: var(--success-color);
-}
-
-.toast-error {
-    background: #ef4444;
-}
-
-.toast-info {
-    background: var(--accent-color);
-}
+/* No Toast Notifications - Removed completely for minimalism */

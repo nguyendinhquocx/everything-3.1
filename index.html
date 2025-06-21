@@ -8,100 +8,143 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- New Horizontal Toolbar -->
-    <div class="toolbar" id="toolbar">
-        <div class="toolbar-content">
-            <!-- Search Input -->
-            <div class="search-group">
-                <div class="search-icon">
+    <!-- ChatGPT-style Sidebar (optional) -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <button class="sidebar-toggle" onclick="toggleSidebar()">
+                <svg viewBox="0 0 24 24">
+                    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+            </button>
+            <span class="app-title">Everything</span>
+        </div>
+        
+        <div class="sidebar-content">
+            <div class="sidebar-section">
+                <div class="sidebar-item" onclick="selectDateFilter('all')">
                     <svg viewBox="0 0 24 24">
-                        <path d="M15.5 14h-.79l-.28-.27c.98-1.14 1.57-2.62 1.57-4.23 0-3.59-2.91-6.5-6.5-6.5s-6.5 2.91-6.5 6.5 2.91 6.5 6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0c-2.49 0-4.5-2.01-4.5-4.5s2.01-4.5 4.5-4.5 4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5z"/>
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
                     </svg>
+                    Tất cả
                 </div>
-                <input type="text" class="search-input" placeholder="Tìm kiếm" id="searchInput" autocomplete="off">
-            </div>
-
-            <!-- Drive Selector -->
-            <div class="filter-group">
-                <div class="drive-option" onclick="toggleDrive('C:')" title="Bao gồm ổ C:">
-                    <div class="drive-checkbox" id="driveC">
-                        <svg class="check-icon" viewBox="0 0 24 24">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                        </svg>
-                    </div>
-                    <span>C:</span>
+                <div class="sidebar-item" onclick="selectDateFilter('today')">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
+                    </svg>
+                    Hôm nay
                 </div>
-            </div>
-
-            <!-- File Type Filters -->
-            <div class="filter-group">
-                <button class="filter-icon" onclick="applyImageFilter()" id="filter-images" title="Hình ảnh">
+                <div class="sidebar-item" onclick="selectDateFilter('week')">
                     <svg viewBox="0 0 24 24">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                        <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/>
                     </svg>
-                </button>
-                
-                <button class="filter-icon" onclick="applyMediaFilter()" id="filter-media" title="Media">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
-                    </svg>
-                </button>
-                
-                <button class="filter-icon" onclick="applyDocumentFilter()" id="filter-documents" title="Tài liệu">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
-                    </svg>
-                </button>
-                
-                <button class="filter-icon" onclick="applyFolderFilter()" id="filter-folders" title="Thư mục">
-                    <svg viewBox="0 0 24 24">
-                        <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
-                    </svg>
-                </button>
-            </div>
-
-            <!-- Date Filter Buttons -->
-            <div class="filter-group">
-                <button class="date-filter-btn active" onclick="selectDateFilter('all')" id="filter-all">All</button>
-                <button class="date-filter-btn" onclick="selectDateFilter('today')" id="filter-today">Today</button>
-                <button class="date-filter-btn" onclick="selectDateFilter('week')" id="filter-week">Week</button>
-                <button class="date-filter-btn" onclick="selectDateFilter('month')" id="filter-month">Month</button>
-                <button class="date-filter-btn" onclick="selectDateFilter('year')" id="filter-year">Year</button>
-            </div>
-
-            <!-- Date Range Inputs -->
-            <div class="filter-group date-range-group">
-                <input type="date" class="date-input" id="startDate" onchange="applyDateRange()">
-                <input type="date" class="date-input" id="endDate" onchange="applyDateRange()">
+                    Tuần này
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Results Container -->
-    <div class="container">
-        <div class="iframe-container" id="iframeContainer">
-            <div class="iframe-header">
-                <div class="iframe-actions">
-                    <button class="iframe-fullscreen" onclick="toggleFullscreen()" title="Toàn màn hình" id="fullscreenBtn">
-                        <svg viewBox="0 0 24 24" class="expand-icon">
-                            <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Horizontal Toolbar - More Rounded -->
+        <div class="toolbar" id="toolbar">
+            <div class="toolbar-content">
+                <!-- Search Input with Clear Button -->
+                <div class="search-group">
+                    <div class="search-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M15.5 14h-.79l-.28-.27c.98-1.14 1.57-2.62 1.57-4.23 0-3.59-2.91-6.5-6.5-6.5s-6.5 2.91-6.5 6.5 2.91 6.5 6.5 6.5c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0c-2.49 0-4.5-2.01-4.5-4.5s2.01-4.5 4.5-4.5 4.5 2.01 4.5 4.5-2.01 4.5-4.5 4.5z"/>
                         </svg>
-                        <svg viewBox="0 0 24 24" class="collapse-icon" style="display: none;">
-                            <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
-                        </svg>
-                    </button>
-                    <button class="iframe-close" onclick="closeIframe()" title="Đóng">
+                    </div>
+                    <input type="text" class="search-input" placeholder="Tìm kiếm" id="searchInput" autocomplete="off">
+                    <button class="clear-btn" onclick="clearSearch()" id="clearBtn" style="display: none;" title="Xóa">
                         <svg viewBox="0 0 24 24">
                             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                         </svg>
                     </button>
                 </div>
+
+                <!-- Drive Selector -->
+                <div class="filter-group">
+                    <div class="drive-option" onclick="toggleDrive('C:')" title="Bao gồm ổ C:">
+                        <div class="drive-checkbox" id="driveC">
+                            <svg class="check-icon" viewBox="0 0 24 24">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                            </svg>
+                        </div>
+                        <span>C:</span>
+                    </div>
+                </div>
+
+                <!-- File Type Filters - More Rounded -->
+                <div class="filter-group">
+                    <button class="filter-icon" onclick="applyImageFilter()" id="filter-images" title="Hình ảnh">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+                        </svg>
+                    </button>
+                    
+                    <button class="filter-icon" onclick="applyMediaFilter()" id="filter-media" title="Media">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                        </svg>
+                    </button>
+                    
+                    <button class="filter-icon" onclick="applyDocumentFilter()" id="filter-documents" title="Tài liệu">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+                        </svg>
+                    </button>
+                    
+                    <button class="filter-icon" onclick="applyFolderFilter()" id="filter-folders" title="Thư mục">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M10,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V8C22,6.89 21.1,6 20,6H12L10,4Z"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Date Filter Buttons - More Rounded -->
+                <div class="filter-group">
+                    <button class="date-filter-btn active" onclick="selectDateFilter('all')" id="filter-all">All</button>
+                    <button class="date-filter-btn" onclick="selectDateFilter('today')" id="filter-today">Today</button>
+                    <button class="date-filter-btn" onclick="selectDateFilter('week')" id="filter-week">Week</button>
+                    <button class="date-filter-btn" onclick="selectDateFilter('month')" id="filter-month">Month</button>
+                    <button class="date-filter-btn" onclick="selectDateFilter('year')" id="filter-year">Year</button>
+                </div>
+
+                <!-- Date Range Inputs - More Rounded -->
+                <div class="filter-group date-range-group">
+                    <input type="date" class="date-input" id="startDate" onchange="applyDateRange()">
+                    <input type="date" class="date-input" id="endDate" onchange="applyDateRange()">
+                </div>
             </div>
-            <iframe class="everything-iframe" id="everythingFrame" src=""></iframe>
+        </div>
+
+        <!-- Results Container - No Border -->
+        <div class="container">
+            <div class="iframe-container" id="iframeContainer">
+                <div class="iframe-header">
+                    <div class="iframe-actions">
+                        <button class="iframe-fullscreen" onclick="toggleFullscreen()" title="Toàn màn hình" id="fullscreenBtn">
+                            <svg viewBox="0 0 24 24" class="expand-icon">
+                                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                            </svg>
+                            <svg viewBox="0 0 24 24" class="collapse-icon" style="display: none;">
+                                <path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
+                            </svg>
+                        </button>
+                        <button class="iframe-close" onclick="closeIframe()" title="Đóng">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <iframe class="everything-iframe" id="everythingFrame" src=""></iframe>
+            </div>
         </div>
     </div>
 
-    <!-- URL Converter Modal (unchanged) -->
+    <!-- URL Converter Modal - More Rounded -->
     <div class="modal-overlay" id="urlConverterModal">
         <div class="modal-content">
             <div class="modal-header">
