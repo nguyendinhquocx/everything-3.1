@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Extension Icon</title>
+</head>
+<body>
+    <canvas id="canvas" width="128" height="128"></canvas>
+    <br>
+    <button onclick="downloadIcon()">Download Icon</button>
+    
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Draw icon
+        function drawIcon() {
+            // Background circle
+            ctx.fillStyle = '#0066cc';
+            ctx.beginPath();
+            ctx.arc(64, 64, 60, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Border
+            ctx.strokeStyle = '#004499';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Search icon
+            ctx.strokeStyle = 'white';
+            ctx.fillStyle = 'white';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            
+            // Magnifying glass circle
+            ctx.beginPath();
+            ctx.arc(56, 56, 18, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Magnifying glass handle
+            ctx.beginPath();
+            ctx.moveTo(72, 72);
+            ctx.lineTo(84, 84);
+            ctx.stroke();
+            
+            // Small file icon
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.fillRect(39, 44, 12, 16);
+            
+            // File lines
+            ctx.fillStyle = '#0066cc';
+            ctx.fillRect(39, 46, 8, 1);
+            ctx.fillRect(39, 49, 10, 1);
+            ctx.fillRect(39, 52, 6, 1);
+        }
+        
+        function downloadIcon() {
+            const link = document.createElement('a');
+            link.download = 'icon.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Draw the icon
+        drawIcon();
+    </script>
+</body>
+</html>

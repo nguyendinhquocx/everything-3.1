@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everything Explorer</title>
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+    <div class="container">
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Tìm kiếm tệp và thư mục..." autocomplete="off">
+                <button id="clearBtn" class="clear-btn">×</button>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div id="resultsContainer" class="results-container">
+                <iframe id="resultsFrame" class="results-frame" src="about:blank"></iframe>
+                <button id="fullscreenBtn" class="fullscreen-btn">⛶</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="sidepanel.js"></script>
+</body>
+</html>
