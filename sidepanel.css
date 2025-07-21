@@ -64,19 +64,13 @@ body {
 .search-container input {
   width: 100%;
   padding: var(--spacing-md);
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  border: none;
+  border-radius: 0;
   font-size: var(--font-size-md);
-  background: var(--secondary-color);
+  background: transparent;
   color: var(--text-color);
   outline: none;
-  transition: all 0.2s ease;
   box-sizing: border-box;
-}
-
-.search-container input:focus {
-  border-color: var(--active-color);
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 }
 
 .clear-btn {
@@ -113,8 +107,8 @@ body {
 .results-container {
   flex: 1;
   position: relative;
-  border: 1px solid var(--border-color);
-  border-radius: var(--border-radius);
+  border: none;
+  border-radius: 0;
   overflow: hidden;
   background: var(--secondary-color);
 }
@@ -124,42 +118,6 @@ body {
   height: 100%;
   border: none;
   background: var(--secondary-color);
-}
-
-.fullscreen-btn {
-  position: absolute;
-  top: var(--spacing-sm);
-  right: var(--spacing-sm);
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  padding: var(--spacing-sm);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  z-index: 10;
-  font-size: var(--font-size-md);
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.fullscreen-btn:hover {
-  background: rgba(0, 0, 0, 0.9);
-}
-
-/* Half-screen mode */
-.results-container.half-screen {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 50vw;
-  height: 100vh;
-  z-index: 1000;
-  border-radius: 0;
-  border: none;
 }
 
 
