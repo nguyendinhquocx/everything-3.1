@@ -31,6 +31,7 @@
 - [x] Loại bỏ viền xung quanh ô tìm kiếm và ô kết quả để tối giản
 - [x] Loại bỏ hoàn toàn nút fullscreen và tính năng half-screen
 - [x] Tự động focus vào ô tìm kiếm khi mở extension
+- [x] Thêm tính năng parse URL từ Everything HTTP server để hiển thị đường dẫn thực
 
 ## Ghi chú
 
