@@ -72,64 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Auto-copy to clipboard immediately
         copyPathToClipboard(realPath);
         
-        // Wait for iframe to load about:blank, then inject content
+        // Simply show blank page after copying
         resultsFrame.onload = function() {
-            try {
-                const iframeDoc = resultsFrame.contentDocument || resultsFrame.contentWindow.document;
-                
-                const htmlContent = `
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <meta charset="utf-8">
-                        <style>
-                            body { 
-                                font-family: system-ui, -apple-system, sans-serif; 
-                                padding: 20px; 
-                                background: #fff; 
-                                color: #000;
-                                line-height: 1.5;
-                                margin: 0;
-                                text-align: center;
-                            }
-                            .path-container {
-                                background: #f5f5f5;
-                                padding: 15px;
-                                border-radius: 8px;
-                                margin: 20px 0;
-                                word-break: break-all;
-                                font-family: 'Consolas', 'Monaco', monospace;
-                                font-size: 14px;
-                                text-align: left;
-                            }
-                            .success-message {
-                                color: #000;
-                                font-size: 16px;
-                                margin-bottom: 10px;
-                                font-weight: 500;
-                            }
-                            .instruction {
-                                color: #666;
-                                font-size: 14px;
-                                margin-top: 15px;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <div class="success-message">✓ Đã copy đường dẫn vào clipboard!</div>
-                        <div class="path-container">${realPath}</div>
-                        <div class="instruction">Đường dẫn đã được copy tự động. Bạn có thể paste (Ctrl+V) ở bất kỳ đâu.</div>
-                    </body>
-                    </html>
-                `;
-                
-                iframeDoc.open();
-                iframeDoc.write(htmlContent);
-                iframeDoc.close();
-                
-            } catch (error) {
-                console.error('Error injecting content into iframe:', error);
-            }
+            // Do nothing - keep it blank and simple
         };
     }
     
